@@ -135,16 +135,17 @@ CREATE TABLE invoice (
 CREATE TABLE invoice_line (
   id               BIGSERIAL PRIMARY KEY,
   invoice_id       BIGINT NOT NULL REFERENCES invoice(id) ON DELETE CASCADE,
-  source_type      TEXT,              
+  source_type      TEXT,
   source_id        BIGINT,
   description      TEXT NOT NULL,
   quantity         NUMERIC(12,2) NOT NULL DEFAULT 1 CHECK (quantity > 0),
   unit_price       NUMERIC(12,2) NOT NULL CHECK (unit_price >= 0),
   tax_category_id  BIGINT NOT NULL REFERENCES tax_category(id) ON DELETE RESTRICT,
-  applied_vat_rate NUMERIC(5,2) NOT NULL DEFAULT 0,
+  applied_vat_rate NUMERIC(5,2),          -- <== FĂRĂ NOT NULL, FĂRĂ DEFAULT
   vat_amount       NUMERIC(12,2) NOT NULL DEFAULT 0,
   line_total       NUMERIC(12,2) NOT NULL DEFAULT 0
 );
+
 
 CREATE TABLE payment (
   id         BIGSERIAL PRIMARY KEY,
